@@ -28,9 +28,14 @@ test.describe(`Lunch app e2e tests`, () => {
 
   test(`Open day is current day`, async () => {
     const currentWeekDayInLithuanian = await weekDayPage.getCurrentDay();
-    expect(translateDayNameFromLithuanianToEnglish(currentWeekDayInLithuanian)).toBe(getCurrentWeekDay())
+    expect(translateDayNameFromLithuanianToEnglish(currentWeekDayInLithuanian)).toBe(getCurrentWeekDay());
   });
 
+  test(`By default the current day URL is opened`, async () => {
+    const currentURL = await page.url();
+    const currentWeekDayInLithuanian = await weekDayPage.getCurrentDay();
+    expect(currentURL).toContain(translateDayNameFromLithuanianToEnglish(currentWeekDayInLithuanian).toLowerCase());
+  });
 });
 
 async function closeReviewDialog() {
