@@ -17,8 +17,8 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Run ESLint on all files
-        run: npx eslint .
+      - name: Run ESLint on all files and fix potentially fixable errors/warnings
+        run: npx eslint . --fix
 
       - name: Install playwright and run tests
         run: npx playwright install && npx playwright test
