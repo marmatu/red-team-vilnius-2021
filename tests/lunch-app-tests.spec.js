@@ -13,13 +13,54 @@ test.describe(`Lunch app e2e tests`, () => {
     page = await browser.newPage();
     loginPage = new LoginPage(page);
     weekDayPage = new WeekDayPage(page);
-  });
-  test.beforeEach(async () => {
     await loginPage.goto();
-  });
-
-  test(`Login successful`, async () => {
     await loginPage.enterCredentials(USERNAME, PASSWORD);
     await loginPage.loginButtonClick();
   });
+  test.beforeEach(async () => {
+    await weekDayPage.goto();
+    await closeReviewDialog();
+  });
+
+  test(`Login successful`, async () => {
+    expect(await weekDayPage.logoutButtonExists()).toBe(true);
+  });
+
+  test(`Open day is current day`, async () => {
+    const currentWeekDayInLithuanian = await weekDayPage.getCurrentDay();
+    expect(translateDayNameFromLithuanianToEnglish(currentWeekDayInLithuanian)).toBe(getCurrentWeekDay())
+  });
+
 });
+
+async function closeReviewDialog() {
+  if (await weekDayPage.reviewDialogExists()) {
+    await weekDayPage.closeReviewDialog();
+  }
+}
+
+function getCurrentWeekDay() {
+  const weekDaysInEnglish = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  return weekDaysInEnglish[new Date().getDay()]; // new Date() object returns current date by default;;
+}
+
+function translateDayNameFromLithuanianToEnglish(dayInLithuanian) {
+  switch (dayInLithuanian) {
+    case "Pirmadienis":
+      return "Monday";
+    case "Antradienis":
+      return "Tuesday";
+    case "Trečiadienis":
+      return "Wednesday";
+    case "Ketvirtadienis":
+      return "Thursday";
+    case "Penktadienis":
+      return "Friday";
+    case "Šeštadienis":
+      return "Saturday";
+    case "Sekmadienis":
+      return "Sunday";
+    default:
+      return "Incorrect Lithuanian week day received";
+  }
+}

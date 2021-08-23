@@ -1,16 +1,12 @@
 const config = {
-  "timeout": 40000,
   "use": {
-    "browserName": "chromium",
-    "headless": false,
+    "browserName": "chromium", //Chrome is the only supported browser for this application 
+    "headless": true,
     "screenshot": "only-on-failure",
     "viewport": {
       "height": 1080,
       "width": 1920
-    },
-    launchOptions: {
-      slowMo: 750,
-    },
+    }
   }
 };
 
